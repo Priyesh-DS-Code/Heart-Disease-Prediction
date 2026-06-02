@@ -93,10 +93,10 @@ algonames = [
 ]
 
 modelnames = [
-    Path('artifacts\DecisionTree.pkl'),
-    Path('artifacts\LogisticRegression.pkl'),
-    Path('artifacts\RandomForest.pkl'),
-    Path('artifacts\SVM.pkl')
+    Path('artifacts/DecisionTree.pkl'),
+    Path('artifacts/LogisticRegression.pkl'),
+    Path('artifacts/RandomForest.pkl'),
+    Path('artifacts/SVM.pkl')
 ]
 
 preprocessor = pickle.load(open(Path('artifacts/Preprocessor.pkl'), 'rb'))
