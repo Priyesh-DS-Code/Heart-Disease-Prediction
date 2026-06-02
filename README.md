@@ -88,20 +88,6 @@ http://localhost:8501
 
 ---
 
-## 🎯 Learning Outcomes
-
-This project strengthened my understanding of:
-
-- Data Preprocessing
-- Feature Engineering
-- Machine Learning Classification
-- Model Evaluation
-- Pickle Serialization
-- Streamlit Application Development
-- End-to-End Machine Learning Deployment
-
----
-
 ## 🔮 Future Enhancements
 
 - Disease Probability Prediction
