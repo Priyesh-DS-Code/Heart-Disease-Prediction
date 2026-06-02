@@ -4,6 +4,7 @@ import numpy as np
 import pickle
 import base64
 import json
+from pathlib import Path
 
 st.set_page_config(
     page_title="Heart Disease Predictor",
@@ -92,16 +93,16 @@ algonames = [
 ]
 
 modelnames = [
-    'artifacts\DecisionTree.pkl',
-    'artifacts\LogisticRegression.pkl',
-    'artifacts\RandomForest.pkl',
-    'artifacts\SVM.pkl'
+    Path('artifacts\DecisionTree.pkl'),
+    Path('artifacts\LogisticRegression.pkl'),
+    Path('artifacts\RandomForest.pkl'),
+    Path('artifacts\SVM.pkl')
 ]
 
-preprocessor = pickle.load(open('artifacts/Preprocessor.pkl', 'rb'))
+preprocessor = pickle.load(open(Path('artifacts/Preprocessor.pkl'), 'rb'))
 
 # Load the dynamic metrics
-with open('artifacts/metrics.json', 'r') as f:
+with open(Path('artifacts/metrics.json'), 'r') as f:
     model_metrics = json.load(f)
 
 def predict_heart_disease(data):
