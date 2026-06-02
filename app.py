@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import pickle
 import base64
+import json
 
 st.set_page_config(
     page_title="Heart Disease Predictor",
@@ -12,7 +13,7 @@ st.set_page_config(
 st.title("🫀 Heart Disease Predictor")
 st.write("Predict the likelihood of heart disease using multiple Machine Learning models.")
 
-age = st.number_input("Age (years)", min_value=0, max_value=150)
+age = st.number_input("Age (years)", min_value=0, max_value=150, value=45)
 
 sex = st.selectbox("Sex", ["Male", "Female"])
 
@@ -24,13 +25,15 @@ chest_pain = st.selectbox(
 resting_bp = st.number_input(
     "Resting Blood Pressure (mm Hg)",
     min_value=0,
-    max_value=300
+    max_value=300,
+    value=120
 )
 
 cholesterol = st.number_input(
     "Serum Cholesterol (mm/dl)",
-    min_value=0
-    )
+    min_value=0,
+    value=193
+)
 
 fasting_bs = st.selectbox(
     "Fasting Blood Sugar",
@@ -45,7 +48,8 @@ resting_ecg = st.selectbox(
 max_hr = st.number_input(
     "Maximum Heart Rate Achieved",
     min_value=60,
-    max_value=202
+    max_value=202,
+    value=150
 )
 
 exercise_angina = st.selectbox(
@@ -56,7 +60,8 @@ exercise_angina = st.selectbox(
 oldpeak = st.number_input(
     "Oldpeak (ST Depression)",
     min_value=0.0,
-    max_value=10.0
+    max_value=10.0,
+    value=1.0
 )
 
 st_slope = st.selectbox(
@@ -64,52 +69,19 @@ st_slope = st.selectbox(
     ["Upsloping", "Flat", "Downsloping"]
 )
 
-sex_map = {
-    "Male": "M",
-    "Female": "F"
-}
-
-chest_pain_map = {
-    "Typical Angina": "TA",
-    "Atypical Angina": "ATA",
-    "Non-Anginal Pain": "NAP",
-    "Asymptomatic": "ASY"
-}
-
-resting_ecg_map = {
-    "Normal": "Normal",
-    "ST-T Wave Abnormality": "ST",
-    "Left Ventricular Hypertrophy": "LVH"
-}
-
-exercise_angina_map = {
-    "Yes": "Y",
-    "No": "N"
-}
-
-st_slope_map = {
-    "Upsloping": "Up",
-    "Flat": "Flat",
-    "Downsloping": "Down"
-}
-
-fasting_bs_map = {
-    "<= 120 mg/dl": 0,
-    "> 120 mg/dl": 1
-}
 
 input_data = pd.DataFrame({
     'Age': [age],
-    'Sex': [sex_map[sex]],
-    'ChestPainType': [chest_pain_map[chest_pain]],
+    'Sex': [sex],
+    'ChestPainType': [chest_pain],
     'RestingBP': [resting_bp],
     'Cholesterol': [cholesterol],
-    'FastingBS': [fasting_bs_map[fasting_bs]],
-    'RestingECG': [resting_ecg_map[resting_ecg]],
+    'FastingBS': [fasting_bs],
+    'RestingECG': [resting_ecg],
     'MaxHR': [max_hr],
-    'ExerciseAngina': [exercise_angina_map[exercise_angina]],
+    'ExerciseAngina': [exercise_angina],
     'Oldpeak': [oldpeak],
-    'ST_Slope': [st_slope_map[st_slope]]
+    'ST_Slope': [st_slope]
 })
 
 algonames = [
@@ -128,6 +100,10 @@ modelnames = [
 
 preprocessor = pickle.load(open('artifacts/Preprocessor.pkl', 'rb'))
 
+# Load the dynamic metrics
+with open('artifacts/metrics.json', 'r') as f:
+    model_metrics = json.load(f)
+
 def predict_heart_disease(data):
     predictions = []
 
@@ -139,6 +115,7 @@ def predict_heart_disease(data):
         predictions.append(prediction)
 
     return predictions
+
 
 if st.button("Submit"):
 
@@ -173,9 +150,16 @@ if st.button("Submit"):
     st.subheader("Final Recommendation")
 
     if final_prediction == 1:
-        st.error("⚠️ Heart Disease Detected")
+        st.error("Heart Disease Detected")
     else:
-        st.success("✅ No Heart Disease Detected")
+        st.success("No Heart Disease Detected")
+
 
     st.write("**Best Model:** Support Vector Machine")
-    st.write("**Score:** 90.17%")
+
+    svm_acc = model_metrics["SVM"]["Accuracy"] * 100 
+    st.write(f"**Score:** {svm_acc:.2f}%")
+
+    st.markdown("---")
+
+    
