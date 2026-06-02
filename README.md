@@ -1,4 +1,4 @@
-# Heart Disease Prediction
+# 🫀 Heart Disease Prediction
 
 This repository contains an end-to-end classical machine learning pipeline designed to predict the likelihood of heart disease based on clinical parameters. The project encompasses exploratory data analysis, robust data preprocessing, the training of multiple classification models, and an interactive web deployment. 
 
